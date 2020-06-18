@@ -107,13 +107,6 @@ class Drafter implements DrafterInterface
         return $this;
     }
 
-    public function type($type)
-    {
-        $this->options['--type'] = $type;
-
-        return $this;
-    }
-
     public function sourcemap()
     {
         $this->options['--sourcemap'] = '';
@@ -146,7 +139,7 @@ class Drafter implements DrafterInterface
     {
         $this->validateOptionsAndArguments();
 
-        $process = new Process(
+        $process = Process::fromShellCommandline(
             $this->getProcessCommand()
         );
 
@@ -249,7 +242,7 @@ class Drafter implements DrafterInterface
         $options   = $this->transformOptions();
         $options[] = escapeshellarg($this->input);
 
-        $command = $this->binary . ' ' . implode(' ', $options);
+        $command = escapeshellarg($this->binary) . ' ' . implode(' ', $options);
 
         return $command;
     }
